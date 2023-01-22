@@ -1,0 +1,1 @@
+export const RIGHT_ARROW = "/public/images/right.svg";

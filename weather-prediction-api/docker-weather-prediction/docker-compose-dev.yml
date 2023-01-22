@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  cassandra-admin-weather-prediction:
+    build:
+      context: ./
+      dockerfile: Dockerfile-cassandra
+    ports:
+      - "8001:8001"
+    environment:
+      - DYNAMO_ENDPOINT=http://cassandra-db-weather-prediction:8008
+  cassandra-db-weather-prediction:
+    command: "-jar DynamoDBLocal.jar -port 8008 -sharedDb -dbPath /home/cassandralocal/data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: cassandra-db-weather-prediction
+    volumes:
+      -  ./my-cassandra-data:/home/cassandralocal/data
+    ports:
+      - "8008:8008"
