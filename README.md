@@ -1,7 +1,7 @@
 ## weather-prediction
 
 # Setup
-* The project in directory `../weather-prediction-api` is the gradle project and implements API in springboot and Kotlin
+* The project in directory `./weather-prediction-api` is the gradle project and implements API in springboot and Kotlin
 * While importing the project in Intellij, select `build.gradle` and open as project
 * Set Project JDK to Java 17 by opening Module Settings for the project
 * Use `clean`, `build` and then `bootRun` options build and application tasks in the Gradle tool window
@@ -12,13 +12,13 @@
 * The api doc can be seen at `http://localhost:8080/swagger-ui/index.html`
 
 # UI
-* The UI that consumes this API is located in directory `../weather-prediction-ui`
+* The UI that consumes this API is located in directory `./weather-prediction-ui`
 * The UI can be setup following the commands
-```bash
+```shell
     > cd ./weather-prediction-ui
     > npm install
     > npm start
-```bash
+```
 * The UI in react runs at port 5001
 
 # CORS
