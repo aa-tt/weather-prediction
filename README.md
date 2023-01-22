@@ -14,9 +14,11 @@
 # UI
 * The UI that consumes this API is located in directory `../weather-prediction-ui`
 * The UI can be setup following the commands
+```bash
     > cd ./weather-prediction-ui
     > npm install
     > npm start
+```bash
 * The UI in react runs at port 5001
 
 # CORS
