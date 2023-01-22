@@ -24,3 +24,12 @@
 # CORS
 * As UI running on port different from server, CORS issue may arise, to tackle it Chrome can be opened with disabled-web-security and a different user-dir
 * For Mac users: `open -na Google\ Chrome --args --disable-web-security --user-data-dir="/Users/anunay.anindya/.hacked-chrome-user0"`
+
+
+### todos
+- security
+- logging
+- controller advice for error responses
+- caching
+- unit test for tdd
+- integratuon test for bdd
