@@ -33,4 +33,3 @@ data class Main(
 data class Rain(
     var lh: Double?,
 )
-

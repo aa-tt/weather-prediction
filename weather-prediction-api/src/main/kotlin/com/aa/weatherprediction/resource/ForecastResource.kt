@@ -1,5 +1,6 @@
 package com.aa.weatherprediction.resource
 
+import com.aa.weatherprediction.model.Report
 import com.aa.weatherprediction.model.WeatherData
 import com.aa.weatherprediction.service.ForecastService
 import org.springframework.web.bind.annotation.GetMapping
@@ -12,7 +13,7 @@ class ForecastResource(
 ) {
 
     @GetMapping("/cities/{cityName}")
-    fun getForecastByCity(@PathVariable cityName: String): List<String> {
+    fun getForecastByCity(@PathVariable cityName: String): Report {
         return forecastService.getForecastByCity(cityName)
     }
 }

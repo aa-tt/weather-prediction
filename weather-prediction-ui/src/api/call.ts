@@ -9,9 +9,9 @@ export const setApi = (versionApi: string) => {
   api = versionApi;
 }
 
-export async function getWeatherReport(city: string): Promise<Array<String>> {
+export async function getWeatherReport(city: string): Promise<Report> {
 
   const response = await fetch(`${baseUrl}/cities/${city}`);
-  const data: string[] = await response.json();
+  const data: Report = await response.json();
   return data;
 }
