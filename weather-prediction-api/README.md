@@ -19,6 +19,3 @@
 ```
 * The UI in react runs at port 5001
 
-## CORS
-* As UI running on port different from server, CORS issue may arise, to tackle it Chrome can be opened with disabled-web-security and a different user-dir
-* For Mac users: `open -na Google\ Chrome --args --disable-web-security --user-data-dir="/Users/anunay.anindya/.hacked-chrome-user0"`
