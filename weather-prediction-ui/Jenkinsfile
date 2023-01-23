@@ -1,0 +1,43 @@
+#!groovy
+def branch = env.BRANCH_NAME
+echo "Building Branch: ${branch}"
+
+pipeline {
+  options {
+      timeout(time: 1, unit: 'HOURS')
+  }
+  agent {
+    label '!master' // important: don't run on master node!
+  }
+
+  stages {
+    stage('Install and Build and Publish') {
+      agent {
+        docker {
+          image 'cimg/node:12.16.3'
+          reuseNode true
+          args "-u root --privileged"
+        }
+      }
+
+      steps {
+        withCredentials([string(credentialsId: 'MY_NPM_TOKEN', variable: 'MY_NPM_TOKEN')]) {
+          script {
+            try {
+                sh """
+                  echo "//registry.npmjs.org/:_authToken=$MY_NPM_TOKEN" >> .npmrc
+                  npm i
+                  npm run build
+                  npm publish
+                """
+            } catch (err) {
+                sh """
+                  echo 'Unable to publish to npm - ${err}'
+                """
+            }
+          }
+        }
+      }
+    }
+  }
+}

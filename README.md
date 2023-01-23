@@ -36,4 +36,4 @@ Caching is done using redis server running in docker
 - ~~caching~~ Done
 - unit test for tdd
 - integratuon test for bdd
-- docker-compose and jenkins script
+- ~~docker-compose and jenkins script~~ Done
