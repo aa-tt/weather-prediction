@@ -1,6 +1,7 @@
 import React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { getWeatherReport } from './api/call';
+import { Report } from './model/Report';
 
 type Props = {
   city: string;

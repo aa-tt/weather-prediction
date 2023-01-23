@@ -21,12 +21,19 @@
 ```
 * The UI in react runs at port 5001
 
+# Caching
+Caching is done using redis server running in docker
+
+# Docker
+```shell
+> docker compose -f docker-compose-dev.yml up -d
+```
 
 ### todos
 - security
 - logging
 - controller advice for error responses
-- caching
+- ~~caching~~ Done
 - unit test for tdd
 - integratuon test for bdd
 - docker-compose and jenkins script

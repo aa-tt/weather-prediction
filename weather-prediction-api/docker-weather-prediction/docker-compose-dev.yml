@@ -16,3 +16,13 @@ services:
       -  ./my-cassandra-data:/home/cassandralocal/data
     ports:
       - "8008:8008"
+
+  redis-cache-weather-prediction:
+    image: "redis:6.2-alpine"
+    restart: always
+    command: "redis-server --port 6379 --loglevel warning --requirepass @nun@y"
+    container_name: redis-cache-weather-prediction
+    volumes:
+      - ./my-redis-cache/:/data
+    ports:
+      - "6379:6379"

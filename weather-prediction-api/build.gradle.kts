@@ -7,6 +7,7 @@ plugins {
     kotlin("kapt") version "1.7.22"
 	kotlin("jvm") version "1.7.22"
 	kotlin("plugin.spring") version "1.7.22"
+	kotlin("plugin.serialization") version "1.7.22"
 }
 
 group = "com.aa"
@@ -42,6 +43,12 @@ dependencies {
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.0.2")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
+    // caching - redis
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+
 
 //    implementation("com.amazonaws.aws-java-sdk-dynamodb:1.12.389")
 //	implementation("software.amazon.awssdk.dynamodb:2.18.2")
