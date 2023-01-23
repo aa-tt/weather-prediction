@@ -33,3 +33,4 @@
 - caching
 - unit test for tdd
 - integratuon test for bdd
+- docker-compose and jenkins script
