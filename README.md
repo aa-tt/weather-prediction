@@ -9,6 +9,7 @@
 docker-compose -f docker-compose-dev.yml up
 ```
 
+OR
 
 # Setup (to run locally in say IntelliJ)
 * The project in directory `./weather-prediction-api` is the gradle project and implements API in springboot and Kotlin
