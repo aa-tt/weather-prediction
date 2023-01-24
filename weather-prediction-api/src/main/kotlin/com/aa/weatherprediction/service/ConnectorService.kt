@@ -6,6 +6,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
@@ -17,7 +18,10 @@ import java.util.*
 @CacheConfig(cacheNames = ["cityCache", "weatherCache"])
 class ConnectorService {
 
-    val devKey = "91c42c81f454e0988288906a426e66a1";
+    @Value("\${weatherApi.key:default}")
+    private val devKey: String = ""
+
+//    val devKey = "91c42c81f454e0988288906a426e66a1";
     val hostUrlForGeo = "https://api.openweathermap.org/geo/1.0/direct"
     val hostUrlForWeather = "https://api.openweathermap.org/data/2.5/weather"
     val client: OkHttpClient = OkHttpClient()
