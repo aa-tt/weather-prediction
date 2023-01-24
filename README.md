@@ -7,13 +7,19 @@
 * Use `clean`, `build` and then `bootRun` options build and application tasks in the Gradle tool window
 * Alternatively `./gradlew clean build bootRun` can be used
 
-# Test
-* The spring boot application runs at port 8080
+# Docker
+Run following from the parent directory
+```shell
+> cd ./docker-weather-prediction
+> docker compose -f docker-compose-dev.yml up -d
+```
+# API (microservice in springboot and kotlin-jvm)
+* The api runs at port 8080
 * The api doc can be seen at `http://localhost:8080/swagger-ui/index.html`
 
-# UI
+# UI (microfrontend in react 16 (functional components and react hooks) )
 * The UI that consumes this API is located in directory `./weather-prediction-ui`
-* The UI can be setup following the commands
+* The UI can be started following the commands
 ```shell
     > cd ./weather-prediction-ui
     > npm install
@@ -23,12 +29,6 @@
 
 # Caching
 Caching is done using redis server running in docker
-
-# Docker
-```shell
-> docker compose -f docker-compose-dev.yml up -d
-```
-
 ### todos
 - security
 - logging
