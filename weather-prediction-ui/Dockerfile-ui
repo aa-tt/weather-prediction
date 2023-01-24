@@ -1,0 +1,15 @@
+FROM node:latest
+
+WORKDIR /usr/src/app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build:dev
+
+# RUN apt-get -q update  && apt-get -qy install netcat
+
+CMD ["npm", "run", "start"]

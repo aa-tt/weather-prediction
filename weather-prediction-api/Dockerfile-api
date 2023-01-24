@@ -1,0 +1,11 @@
+FROM gradle:jdk17-alpine
+
+WORKDIR /usr/src/api
+
+COPY . .
+
+RUN gradle clean build
+
+# RUN apt-get -q update  && apt-get -qy install netcat
+
+CMD ["java", "-jar", "./build/libs/weather-prediction-0.0.1-SNAPSHOT.jar"]

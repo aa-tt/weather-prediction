@@ -1,6 +1,16 @@
 ## weather-prediction
 
-# Setup
+# Execution
+1. Execute below `docker-compose` command wait for images to be pulled, build and started.
+2. Open http://localhost:5001 for UI.
+3. Open http://localhost:8080/swagger-ui/index.html for swagger.
+
+```shell
+docker-compose -f docker-compose-dev.yml up
+```
+
+
+# Setup (to run locally in say IntelliJ)
 * The project in directory `./weather-prediction-api` is the gradle project and implements API in springboot and Kotlin
 * While importing the project in Intellij, select `build.gradle` and open as project
 * Set Project JDK to Java 17 by opening Module Settings for the project

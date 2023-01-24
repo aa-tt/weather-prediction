@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  # REST API in kotlin-jvm, springboot, okhttp3
+  api:
+    build:
+      context: ./weather-prediction-api
+      dockerfile: Dockerfile-api
+    ports:
+      - "8080:8080"
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+    depends_on:
+      - redis-cache-weather-prediction
+  # UI in react using functional component and react hooks
+  ui:
+    build:
+      context: ./weather-prediction-ui
+      dockerfile: Dockerfile-ui
+    ports:
+      - "5001:5001"
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+    depends_on:
+      - api
+  # Redis server for caching in api
+  redis-cache-weather-prediction:
+    image: "redis"
+    ports:
+      - "6379:6379"
+    container_name: redis-cache-weather-prediction
+    volumes:
+      - ./my-redis-cache/:/data
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+
+networks:
+  weather-shared-network:
