@@ -8,8 +8,9 @@ data class WeatherData(
     var wind: Wind?,
     var main: Main?,
     var rain: Rain?,
+    var weather: List<WeatherMain>?,
     var dt: Int
-) {constructor(): this(null,null,null,null,0)}
+) {constructor(): this(null,null,null,null,null,0)}
 
 @JsonClass(generateAdapter = true)
 data class Coord(
@@ -32,4 +33,9 @@ data class Main(
 @JsonClass(generateAdapter = true)
 data class Rain(
     var lh: Double?,
+){constructor(): this(null)}
+
+@JsonClass(generateAdapter = true)
+data class WeatherMain(
+    var main: String?,
 ){constructor(): this(null)}

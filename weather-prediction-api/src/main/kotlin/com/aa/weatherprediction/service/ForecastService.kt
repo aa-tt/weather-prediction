@@ -1,10 +1,12 @@
 package com.aa.weatherprediction.service
 
 import com.aa.weatherprediction.model.City
+import com.aa.weatherprediction.model.DayAndReport
 import com.aa.weatherprediction.model.Report
 import com.aa.weatherprediction.model.WeatherData
-import okio.use
 import org.springframework.stereotype.Service
+import java.time.DayOfWeek
+import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,8 +33,23 @@ class ForecastService(
         }
         return Report(
             alerts = weatherAlerts,
+            mains = weatherData.weather?.map { it.main!! },
             temp_min = weatherData.main?.temp_min,
             temp_max = weatherData.main?.temp_max,
         )
+    }
+
+    // using Mock Data as forecast service comes under Pro subscription
+    fun getForecastByDays(name: String, days: Long): ArrayList<DayAndReport> {
+        var reports = arrayListOf<DayAndReport>()
+        for(day in 1..days) {
+            reports.add(
+                DayAndReport(
+                    day = LocalDate.now().plusDays(day).dayOfWeek.name,
+                    report = getForecastByCity(name)
+                )
+            )
+        }
+        return reports
     }
 }
