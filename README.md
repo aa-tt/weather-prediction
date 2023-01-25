@@ -2,7 +2,7 @@
 
 # Execution
 1. Execute below `docker-compose` command wait for images to be pulled, build and started.
-2. Open http://localhost:5001 for UI.
+2. Open http://localhost for the weather app.
 3. Open http://localhost:8080/swagger-ui/index.html for swagger.
 
 ```shell
