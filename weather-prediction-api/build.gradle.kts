@@ -57,6 +57,7 @@ dependencies {
 //	implementation("software.amazon.awssdk.dynamodb-enhanced:2.18.2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
 //	testImplementation("io.projectreactor:reactor-test")
 //	testImplementation("org.springframework.security:spring-security-test")
 }
