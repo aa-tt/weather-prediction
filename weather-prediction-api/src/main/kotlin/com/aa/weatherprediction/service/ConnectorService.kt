@@ -2,7 +2,6 @@ package com.aa.weatherprediction.service
 
 import com.aa.weatherprediction.model.City
 import com.aa.weatherprediction.model.WeatherData
-import com.squareup.moshi.Moshi
 import okhttp3.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.CacheConfig
@@ -10,6 +9,7 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
@@ -55,21 +55,16 @@ class ConnectorService {
         ): Call<WeatherData>
     }
 
-    val hostUrlForGeo = "https://api.openweathermap.org/geo/1.0/direct"
-    val hostUrlForWeather = "https://api.openweathermap.org/data/2.5/weather"
-    val client: OkHttpClient = OkHttpClient()
-    val moshi: Moshi = Moshi.Builder().build()
-
     @Cacheable(key= "#name", value= ["City"])
     fun getCity(name: String): List<City> {
-        val response: retrofit2.Response<List<City>> = api.getCity(name, apiKey).execute()
+        val response: Response<List<City>> = api.getCity(name, apiKey).execute()
         if (!response.isSuccessful) throw IOException("Unexpected code $response")
         return response.body()!!
     }
 
     @Cacheable(key="#lat-#lon", value= ["WeatherData"])
     fun getWeather(lat: Double, lon: Double): WeatherData {
-        val response: retrofit2.Response<WeatherData> = api.getWeather(lat, lon, "imperial", apiKey).execute()
+        val response: Response<WeatherData> = api.getWeather(lat, lon, "imperial", apiKey).execute()
         if (!response.isSuccessful) throw IOException("Unexpected code $response")
         return response.body()!!
     }

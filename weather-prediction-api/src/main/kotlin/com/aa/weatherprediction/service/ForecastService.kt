@@ -14,9 +14,6 @@ class ForecastService(
 
     fun getForecastByCity(name: String): Report {
         val city = connectorService.getCity(name).first()
-        if(city == null) {
-            return Report();
-        }
         val weatherData: WeatherData = connectorService.getWeather(city.lat!!, city.lon!!)
         val weatherAlerts: ArrayList<String> = arrayListOf()
         if (weatherData.wind?.speed!! > 10) {

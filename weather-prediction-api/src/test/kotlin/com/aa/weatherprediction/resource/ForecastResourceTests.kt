@@ -13,36 +13,42 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import redis.embedded.RedisServer
 
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ExtendWith(SpringExtension::class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = [
+        "spring.data.redis.url=redis://localhost:6379"
+    ]
+)
+//@ExtendWith(SpringExtension::class)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ForecastResourceTests @Autowired constructor(
     private val restTemplate: TestRestTemplate
 ){
 
-    val devKey = "91c42c81f454e0988288906a426e66a1"
     val name = "delhi"
-    val hostUrlForGeo = "https://api.openweathermap.org/geo/1.0/direct"
-    val hostUrlForWeather = "https://api.openweathermap.org/data/2.5/weather"
 
     @LocalServerPort
     private var port: Int = 0
 
+    val redisServer = RedisServer.builder().setting("bind localhost").port(6379).build()
     val mockWebServer = MockWebServer()
     @Before
     fun setUp() {
+        redisServer.start()
         mockWebServer.start(port)
     }
     @After
     fun tearDown() {
         mockWebServer.shutdown()
+        redisServer.stop()
     }
 
     @Test
     fun `report should return`() {
-        //Given
+        // Given
         val cityContract = JsonContract.readContractualJsonFile("city-payload-open-weather-api.json")
         val cityResponse = MockResponse()
             .setResponseCode(HttpStatus.OK.value())
@@ -53,10 +59,14 @@ class ForecastResourceTests @Autowired constructor(
             .setBody(weatherContract)
         mockWebServer.enqueue(cityResponse)
         mockWebServer.enqueue(weatherResponse)
+
+        // When
         val actual = restTemplate.getForEntity(
             "http://localhost:$port/cities/$name/forecast",
             Report::class.java
         )
+
+        // Then
         print(actual)
 
         Assertions.assertEquals(200, actual.statusCode.value())

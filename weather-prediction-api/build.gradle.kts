@@ -58,6 +58,9 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+    testImplementation("it.ozimov:embedded-redis:0.7.3") {
+        exclude(group = "org.slf4j")
+    }
 //	testImplementation("io.projectreactor:reactor-test")
 //	testImplementation("org.springframework.security:spring-security-test")
 }

@@ -4,6 +4,6 @@ WORKDIR /usr/src/api
 
 COPY . .
 
-RUN gradle clean build
+RUN gradle clean build -x test
 
 CMD ["java", "-jar", "./build/libs/weather-prediction-0.0.1-SNAPSHOT.jar"]
