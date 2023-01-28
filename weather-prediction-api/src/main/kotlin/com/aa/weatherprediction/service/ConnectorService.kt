@@ -3,15 +3,18 @@ package com.aa.weatherprediction.service
 import com.aa.weatherprediction.model.City
 import com.aa.weatherprediction.model.WeatherData
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 import java.io.IOException
-import java.util.*
 
 
 @Service
@@ -19,41 +22,62 @@ import java.util.*
 class ConnectorService {
 
     @Value("\${weatherApi.key:default}")
-    private val devKey: String = ""
+    private val apiKey: String = ""
+    private val baseUrl: String = "https://api.openweathermap.org"
 
-//    val devKey = "91c42c81f454e0988288906a426e66a1";
+    private var retrofit: Retrofit
+    private var api: ConnectorAPI
+
+    constructor(
+        okHttpClientFactory: OkHttpClientFactory,
+    ) {
+        retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(okHttpClientFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+        api = retrofit.create(ConnectorAPI::class.java)
+    }
+
+    interface ConnectorAPI {
+        @GET("/geo/1.0/direct")
+        fun getCity(
+            @Query("q") name: String,
+            @Query("appId") apiKey: String,
+        ): Call<List<City>>
+
+        @GET("/data/2.5/weather")
+        fun getWeather(
+            @Query("lat") lat: Double,
+            @Query("lon") lon: Double,
+            @Query("units") units: String,
+            @Query("appId") apiKey: String,
+        ): Call<WeatherData>
+    }
+
     val hostUrlForGeo = "https://api.openweathermap.org/geo/1.0/direct"
     val hostUrlForWeather = "https://api.openweathermap.org/data/2.5/weather"
     val client: OkHttpClient = OkHttpClient()
     val moshi: Moshi = Moshi.Builder().build()
 
     @Cacheable(key= "#name", value= ["City"])
-    fun getCity(name: String): Optional<City> {
-        val request: Request = Request.Builder()
-            .url("$hostUrlForGeo?q=$name&appid=$devKey")
-            .build()
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            println("city service")
-
-            val listOfCityType = Types.newParameterizedType(List::class.java, City::class.java)
-            val cityAdapter = moshi.adapter<List<City>>(listOfCityType)
-            val cityList = cityAdapter.fromJson(response.body!!.source())
-            return Optional.ofNullable(cityList?.firstOrNull())
-        }
+    fun getCity(name: String): List<City> {
+        val response: retrofit2.Response<List<City>> = api.getCity(name, apiKey).execute()
+        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+        return response.body()!!
     }
 
     @Cacheable(key="#lat-#lon", value= ["WeatherData"])
     fun getWeather(lat: Double, lon: Double): WeatherData {
-        val request: Request = Request.Builder()
-            .url("$hostUrlForWeather?lat=$lat&lon=$lon&units=imperial&appid=$devKey")
-            .build()
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+        val response: retrofit2.Response<WeatherData> = api.getWeather(lat, lon, "imperial", apiKey).execute()
+        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+        return response.body()!!
+    }
+}
 
-            val weatherAdapter = moshi.adapter(WeatherData::class.java)
-            val weatherData = weatherAdapter.fromJson(response.body!!.source())
-            return weatherData!!
-        }
+@Configuration
+class OkHttpClientFactory {
+    fun create(): OkHttpClient {
+        return OkHttpClient.Builder().build()
     }
 }

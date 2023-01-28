@@ -1,13 +1,10 @@
 package com.aa.weatherprediction.service
 
-import com.aa.weatherprediction.model.City
 import com.aa.weatherprediction.model.DayAndReport
 import com.aa.weatherprediction.model.Report
 import com.aa.weatherprediction.model.WeatherData
 import org.springframework.stereotype.Service
-import java.time.DayOfWeek
 import java.time.LocalDate
-import java.util.*
 import kotlin.collections.ArrayList
 
 @Service
@@ -16,11 +13,11 @@ class ForecastService(
 ) {
 
     fun getForecastByCity(name: String): Report {
-        val city: Optional<City> = connectorService.getCity(name)
-        if(city.isEmpty) {
+        val city = connectorService.getCity(name).first()
+        if(city == null) {
             return Report();
         }
-        val weatherData: WeatherData = connectorService.getWeather(city.get().lat!!, city.get().lon!!)
+        val weatherData: WeatherData = connectorService.getWeather(city.lat!!, city.lon!!)
         val weatherAlerts: ArrayList<String> = arrayListOf()
         if (weatherData.wind?.speed!! > 10) {
             weatherAlerts.add("It’s too windy, watch out!")
