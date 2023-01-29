@@ -1,14 +1,19 @@
 ## weather-prediction
 
 # Execution
-1. Execute below `docker-compose` command wait for images to be pulled, build and started.
-2. Open http://localhost for the weather app.
-3. Open http://localhost:8080/swagger-ui/index.html for swagger.
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/aa-tt/weather-prediction)
+--
+or,
+1. Git Clone this repo.
+2. Execute below `docker-compose` command wait for images to be pulled, build and started.
+3. Open http://localhost for app.
+4. Open http://localhost:8080/swagger-ui/index.html for swagger.
 
 ```shell
 docker-compose -f docker-compose-dev.yml up
 ```
 
+----
 OR
 
 # Setup (to run locally in say IntelliJ)
@@ -45,6 +50,6 @@ Caching is done using redis server running in docker
 - logging
 - controller advice for error responses
 - ~~caching~~ Done
-- unit test for tdd
-- integratuon test for bdd
+- ~~unit test for tdd~~ Done
+- ~~integratuon test for bdd~~ Done
 - ~~docker-compose and jenkins script~~ Done

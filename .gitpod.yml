@@ -1,0 +1,11 @@
+tasks:
+  - name: docker compose task
+    command: docker-compose -f docker-compose-dev.yml up
+
+ports:
+  - port: 80
+    onOpen: open-preview
+
+github:
+  prebuilds:
+    master: true
