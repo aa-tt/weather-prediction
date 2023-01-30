@@ -6,6 +6,7 @@ import okhttp3.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.CacheConfig
 import org.springframework.cache.annotation.Cacheable
+import org.springframework.cloud.context.config.annotation.RefreshScope
 import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Service
 import retrofit2.Call
@@ -18,6 +19,7 @@ import java.io.IOException
 
 
 @Service
+@RefreshScope
 @CacheConfig(cacheNames = ["cityCache", "weatherCache"])
 class ConnectorService {
 

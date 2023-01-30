@@ -10,6 +10,8 @@ plugins {
 	kotlin("plugin.serialization") version "1.7.22"
 }
 
+extra["springCloudVersion"] = "2022.0.1"
+
 group = "com.aa"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -20,8 +22,8 @@ repositories {
 
 dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-data-cassandra-reactive")
-	implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
-	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+//	implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+//	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 //	implementation("org.springframework.boot:spring-boot-starter-hateoas")
 //	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -51,6 +53,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
 
+    // consul
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
+    implementation("org.springframework.cloud:spring-cloud-starter-consul-config")
+//    implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
+
 
 //    implementation("com.amazonaws.aws-java-sdk-dynamodb:1.12.389")
 //	implementation("software.amazon.awssdk.dynamodb:2.18.2")
@@ -63,6 +71,12 @@ dependencies {
     }
 //	testImplementation("io.projectreactor:reactor-test")
 //	testImplementation("org.springframework.security:spring-security-test")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
 }
 
 tasks.withType<KotlinCompile> {

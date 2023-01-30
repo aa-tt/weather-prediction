@@ -1,5 +1,22 @@
 version: '3.8'
 services:
+  # consul kv for secret manager
+  consul:
+    build:
+      context: ./ssm
+      dockerfile: Dockerfile-ssm
+    environment:
+      CONSUL_HTTP_ADDR: "consul:8500"
+    container_name: consul_ssm
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    volumes:
+      - ./my-consul-data/:/consul/data
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+
   # nginx for proxy and routing
   nginx:
     image: nginx:latest

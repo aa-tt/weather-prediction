@@ -4,6 +4,7 @@ WORKDIR /usr/src/api
 
 ENV ALLOW_ORIGINS=http://localhost:5001,http://localhost,https://*.gitpod.io
 ENV REDIS_URL=redis://redis-cache-weather-prediction:6379
+ENV CONSUL_HOST=consul_ssm
 
 COPY . .
 
