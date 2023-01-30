@@ -2,6 +2,9 @@ FROM gradle:jdk17-alpine
 
 WORKDIR /usr/src/api
 
+ENV ALLOW_ORIGINS=http://localhost:5001,http://localhost,https://*.gitpod.io
+ENV REDIS_URL=redis://redis-cache-weather-prediction:6379
+
 COPY . .
 
 RUN gradle clean build -x test
