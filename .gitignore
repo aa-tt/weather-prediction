@@ -156,3 +156,9 @@ dist
 **/.DS_Store
 
 **/package-lock.json
+
+# Redis
+**/dump.rdb
+
+# Consul
+**/node-id
