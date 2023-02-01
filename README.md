@@ -24,10 +24,11 @@ OR
 * Alternatively `./gradlew clean build bootRun` can be used
 
 # Docker
-Run following from the parent directory
+The images build in the project are build and published at https://hub.docker.com/repositories/ianunay.
+For example, api published with tag v0 and image name ianunay/weather-app-api
 ```shell
-> cd ./docker-weather-prediction
-> docker compose -f docker-compose-dev.yml up -d
+> docker build -t ianunay/weather-app-api:v0 -f Dockerfile-api .
+> docker push ianunay/weather-app-api:v0
 ```
 # API (microservice in springboot and kotlin-jvm)
 * The api runs at port 8080
