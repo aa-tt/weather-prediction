@@ -20,13 +20,16 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - run: cd weather-prediction-ui
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
     - run: npm i
+      working-directory: ./weather-prediction-ui
     - run: npm run build:dev --if-present
+      working-directory: ./weather-prediction-ui
     - run: npm test --if-present
+      working-directory: ./weather-prediction-ui
