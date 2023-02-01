@@ -1,3 +1,5 @@
+image: quadeare/gitpod-kubectl:latest
+
 tasks:
   - name: docker compose task
     command: docker-compose -f docker-compose-dev.yml build && docker-compose -f docker-compose-dev.yml up
