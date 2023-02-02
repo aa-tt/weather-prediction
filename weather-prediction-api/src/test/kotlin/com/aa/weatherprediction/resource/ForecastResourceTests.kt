@@ -1,18 +1,13 @@
 package com.aa.weatherprediction.resource
 
 import com.aa.weatherprediction.model.Report
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.http.HttpStatus
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import redis.embedded.RedisServer
 
 
