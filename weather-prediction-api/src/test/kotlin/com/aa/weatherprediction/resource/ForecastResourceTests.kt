@@ -19,7 +19,10 @@ import redis.embedded.RedisServer
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = [
-        "spring.data.redis.url=redis://localhost:6379"
+        "spring.data.redis.url=redis://localhost:6379",
+        "spring.cloud.consul.host=localhost",
+        "spring.cloud.consul.port=8500",
+        "cors.originPatterns=",
     ]
 )
 //@ExtendWith(SpringExtension::class)
