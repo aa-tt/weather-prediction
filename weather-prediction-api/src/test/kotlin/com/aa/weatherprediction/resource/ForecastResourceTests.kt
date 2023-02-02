@@ -25,43 +25,28 @@ import redis.embedded.RedisServer
         "cors.originPatterns=",
     ]
 )
-//@ExtendWith(SpringExtension::class)
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ForecastResourceTests @Autowired constructor(
     private val restTemplate: TestRestTemplate
 ){
-
-    val name = "delhi"
 
     @LocalServerPort
     private var port: Int = 0
 
     val redisServer = RedisServer.builder().setting("bind localhost").port(6379).build()
-    val mockWebServer = MockWebServer()
+
     @Before
     fun setUp() {
         redisServer.start()
-        mockWebServer.start(port)
     }
     @After
     fun tearDown() {
-        mockWebServer.shutdown()
         redisServer.stop()
     }
 
     @Test
     fun `report should return`() {
         // Given
-        val cityContract = JsonContract.readContractualJsonFile("city-payload-open-weather-api.json")
-        val cityResponse = MockResponse()
-            .setResponseCode(HttpStatus.OK.value())
-            .setBody(cityContract)
-        val weatherContract = JsonContract.readContractualJsonFile("weather-payload-open-weather-api.json")
-        val weatherResponse = MockResponse()
-            .setResponseCode(HttpStatus.OK.value())
-            .setBody(weatherContract)
-        mockWebServer.enqueue(cityResponse)
-        mockWebServer.enqueue(weatherResponse)
+        val name = "Delhi"
 
         // When
         val actual = restTemplate.getForEntity(
@@ -74,12 +59,5 @@ class ForecastResourceTests @Autowired constructor(
 
         Assertions.assertEquals(200, actual.statusCode.value())
         Assertions.assertNotNull(actual.body)
-    }
-}
-// https://kotlinlang.org/docs/object-declarations.html#object-expressions
-object JsonContract {
-    fun readContractualJsonFile(fileName: String): String {
-        val fileInputStream = javaClass.classLoader?.getResourceAsStream(fileName)
-        return fileInputStream?.bufferedReader()?.readText() ?: ""
     }
 }
