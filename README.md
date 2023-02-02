@@ -46,6 +46,11 @@ For example, api published with tag v0 and image name ianunay/weather-app-api
 
 # Caching
 Caching is done using redis server running in docker
+The cached keys can be checked by login to redis-cli
+```shell
+    > redis-cli
+    127.0.0.1:6379> keys *
+```
 ### todos
 - security
 - logging
