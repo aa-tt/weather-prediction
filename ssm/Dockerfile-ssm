@@ -2,6 +2,8 @@ FROM consul:latest
 
 USER root
 
+ENV CONSUL_HTTP_ADDR=consul:8500
+
 COPY . /consul
 
 RUN chmod +x /consul/config/import-secrets.sh
