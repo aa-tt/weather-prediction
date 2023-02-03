@@ -1,0 +1,66 @@
+version: '3.8'
+services:
+  # consul kv for secret manager
+  consul:
+    image: ianunay/weather-app-ssm:v1
+    container_name: consul_ssm
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    volumes:
+      - ./my-consul-data/:/consul/data
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+
+  # nginx for proxy and routing
+  nginx:
+    image: ianunay/weather-app-nginx:v0
+    container_name: weather-app-nginx
+    ports:
+      - "80:80"
+    # command: /bin/sh -c "nginx -g 'daemon off;'"
+    depends_on:
+      - ui
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+
+  # REST API in kotlin-jvm, springboot, okhttp3
+  api:
+    image: ianunay/weather-app-api:v0
+    container_name: api
+    ports:
+      - "8080:8080"
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+    depends_on:
+      - redis-cache-weather-prediction
+
+  # UI in react using functional component and react hooks
+  ui:
+    image: ianunay/weather-app-ui:v0
+    container_name: ui
+    ports:
+      - "5001:5001"
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+    depends_on:
+      - api
+
+  # Redis server for caching in api
+  redis-cache-weather-prediction:
+    image: "redis"
+    ports:
+      - "6379:6379"
+    container_name: redis-cache-weather-prediction
+    volumes:
+      - ./my-redis-cache/:/data
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+
+networks:
+  weather-shared-network:
