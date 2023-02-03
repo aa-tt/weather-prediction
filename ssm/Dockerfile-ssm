@@ -2,7 +2,7 @@ FROM consul:latest
 
 USER root
 
-ENV CONSUL_HTTP_ADDR=consul:8500
+# ENV CONSUL_HTTP_ADDR=consul:8500
 
 COPY . /consul
 
