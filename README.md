@@ -30,6 +30,55 @@ For example, api published with tag v0 and image name ianunay/weather-app-api
 > docker build -t ianunay/weather-app-api:v0 -f Dockerfile-api .
 > docker push ianunay/weather-app-api:v0
 ```
+# Kubernetes
+### Kompose - deploy a sample docker-compose yaml file to a Kubernetes cluster.
+```
+brew install kompose
+
+# Convert your Docker Compose file to Kubernetes:
+kompose convert -f docker-compose-k8s.yml
+```
+### Microk8s - for kubernetes cluster
+```shell
+brew install ubuntu/microk8s/microk8s
+microk8s install
+microk8s status --wait-ready
+microk8s enable dashboard dns istio storage
+microk8s kubectl
+alias k='microk8s.kubectl'
+microk8s dashboard-proxy
+microk8s kubectl apply -f .
+
+microk8s kubectl delete -n default deployment ui consul redis-cache-weather-prediction nginx api
+microk8s kubectl delete -n default persistentvolumeclaim consul-claim0 redis-cache-weather-prediction-claim0
+microk8s kubectl delete -n default service api consul nginx redis-cache-weather-prediction ui kubernetes
+```
+### Minikube - for kubernetes cluster
+```shell
+minikube start
+minikube kubectl -- get po -A
+minikube dashboard
+
+minikube kubectl -- delete -n default service api consul nginx ui redis-cache-weather-prediction
+```
+### kubectl
+```shell
+kubectl create deployment wapp-ui --image=ianunay/weather-app-ui:v0
+kubectl expose deployment wapp-ui --type=LoadBalancer --port=5001
+kubectl port-forward service/wapp-ui 5001:5001
+
+kubectl create deployment wapp-redis --image=redis
+kubectl expose deployment wapp-redis --type=LoadBalancer --port=6379
+kubectl port-forward service/wapp-redis 6379:6379
+
+kubectl create deployment wapp-ssm --image=ianunay/weather-app-ssm:v0
+kubectl expose deployment wapp-ssm --type=LoadBalancer --port=8500
+kubectl port-forward service/wapp-ssm 8500:8500
+
+kubectl create deployment wapp-api --image=ianunay/weather-app-api:v0
+kubectl expose deployment wapp-api --type=LoadBalancer --port=8080
+kubectl port-forward service/wapp-api 8080:8080
+```
 # API (microservice in springboot and kotlin-jvm)
 * The api runs at port 8080
 * The api doc can be seen at `http://localhost:8080/swagger-ui/index.html`
