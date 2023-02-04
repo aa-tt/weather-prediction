@@ -2,10 +2,10 @@
   "name": "weather-prediction-ui",
   "version": "1.0.0",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --config webpack.prod.config.js",
     "build:dev": "webpack --mode development",
     "build:start": "cd dist && PORT=5001 npx serve",
-    "start": "webpack serve --mode development",
+    "start": "webpack serve --config webpack.prod.config.js --hot --open --port 5001",
     "start:live": "webpack serve --open --mode development --live-reload --hot"
   },
   "license": "MIT",
@@ -22,6 +22,7 @@
     "css-loader": "^6.3.0",
     "copy-webpack-plugin": "^5.1.1",
     "html-webpack-plugin": "^5.3.2",
+    "path": "^0.12.7",
     "postcss": "^8.2.1",
     "postcss-loader": "^4.1.0",
     "style-loader": "^3.3.0",
