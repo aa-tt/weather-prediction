@@ -1,5 +1,16 @@
 version: '3.8'
 services:
+  # UI in react using functional component and react hooks
+  ui:
+    build:
+      context: ./weather-prediction-ui
+      dockerfile: Dockerfile-ui
+    ports:
+      - "5001:5001"
+    networks:
+      - weather-shared-network
+    restart: unless-stopped
+
   # consul kv for secret manager
   consul:
     build:
@@ -44,17 +55,6 @@ services:
     restart: unless-stopped
     depends_on:
       - redis-cache-weather-prediction
-
-  # UI in react using functional component and react hooks
-  ui:
-    build:
-      context: ./weather-prediction-ui
-      dockerfile: Dockerfile-ui
-    ports:
-      - "5001:5001"
-    networks:
-      - weather-shared-network
-    restart: unless-stopped
 
   # Redis server for caching in api
   redis-cache-weather-prediction:
