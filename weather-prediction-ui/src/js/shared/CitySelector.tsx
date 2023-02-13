@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { FunctionComponent } from 'react';
+import { counterService } from './CounterService';
 
 type Props = {
   setCity: (city: string) => void;
@@ -26,7 +27,10 @@ const CitySelector: FunctionComponent<Props> = (props: Props) => {
       />
 
       <button
-        onClick={() => setCity(input!)}
+        onClick={() => {
+          counterService.sendMessage(input);
+          setCity(input!);
+        }}
         disabled={!input}
         className="text-2xl bg-gray-500 hover:bg-gray-700 px-5 py-2 leading-5 rounded-full font-semibold text-white"
       >
@@ -34,6 +38,7 @@ const CitySelector: FunctionComponent<Props> = (props: Props) => {
       </button>
       <button
         onClick={() => {
+          counterService.clearMessages();
           setInput(null);
           setCity("");
           // @ts-ignore

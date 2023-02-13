@@ -1,7 +1,7 @@
 import React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { getWeatherForecastByDays, getWeatherReport } from './api/call';
-import { DayAndReport, Report } from './model/Report';
+import { getWeatherForecastByDays, getWeatherReport } from '../../api/call';
+import { DayAndReport, Report } from '../../model/Report';
 
 type Props = {
   city: string;
