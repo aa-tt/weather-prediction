@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   # UI in react using functional component and react hooks
   ui:
