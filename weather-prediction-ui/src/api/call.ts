@@ -1,6 +1,7 @@
 import { DayAndReport, Report } from '../model/Report';
 
-let baseUrl = "http://localhost:8080";
+// let baseUrl = "http://localhost:8080";
+let baseUrl = "/api";
 let api = "/api/v1/forecast";
 
 export const setbaseUrl = (productionUrl: string) => {
