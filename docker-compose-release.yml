@@ -1,7 +1,7 @@
 services:
   # nginx for proxy and routing
   nginx:
-    image: ianunay/weather-app-nginx:v3
+    image: ianunay/weather-app-nginx:v4
     container_name: nginx_weather_prediction
     volumes:
       - ./nginx/nginx-release.conf:/etc/nginx/nginx.conf
@@ -16,7 +16,7 @@ services:
 
   # REST API in kotlin-jvm, springboot, okhttp3
   api:
-    image: ianunay/weather-app-api:v3
+    image: ianunay/weather-app-api:v5
     ports:
       - "8080:8080"
     networks:

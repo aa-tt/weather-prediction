@@ -1,0 +1,5 @@
+FROM nginx:latest
+
+USER root
+
+COPY ./nginx-release.conf /etc/nginx
