@@ -17,6 +17,9 @@ spec:
         image: ianunay/weather-app-api:v5
         ports:
         - containerPort: 8080
+        env:
+        - name: CONSUL_HTTP_ADDR
+          value: "consul_ssm:8500"
 ---
 apiVersion: v1
 kind: Service

@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: consul-ssm
+  name: consul_ssm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: consul-ssm
+      app: consul_ssm
   template:
     metadata:
       labels:
-        app: consul-ssm
+        app: consul_ssm
     spec:
       containers:
       - name: consul
@@ -29,13 +29,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: consul-ssm
+  name: consul_ssm
 spec:
   type: ClusterIP
   ports:
-  - port: 8500
+  - name: http
+    port: 8500
     targetPort: 8500
-  - port: 8600
+  - name: dns
+    port: 8600
     targetPort: 8600
   selector:
-    app: consul-ssm
+    app: consul_ssm
