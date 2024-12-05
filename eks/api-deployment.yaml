@@ -19,7 +19,7 @@ spec:
         - containerPort: 8080
         env:
         - name: CONSUL_HTTP_ADDR
-          value: "consul_ssm:8500"
+          value: "consul-ssm:8500"
 ---
 apiVersion: v1
 kind: Service
