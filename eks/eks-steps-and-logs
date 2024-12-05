@@ -150,3 +150,53 @@ kubernetes                       ClusterIP      10.100.0.1       <none>         
 nginx                            LoadBalancer   10.100.165.124   aa965d51101ef47cea19ddaaa8c2e025-392334644.us-west-2.elb.amazonaws.com   80:31223/TCP        40m
 redis-cache-weather-prediction   ClusterIP      10.100.138.159   <none>                                                                   6379/TCP            44m
 ui                               LoadBalancer   10.100.184.97    abda01443dc894e3db95b5d241cf70f0-393947037.us-west-2.elb.amazonaws.com   5001:31622/TCP      40m
+
+(base) swasthika@Swasthikas-MacBook-Air eks % for node in $(kubectl get nodes -o name); do kubectl drain $node --ignore-daemonsets --delete-local-data; done
+Flag --delete-local-data has been deprecated, This option is deprecated and will be deleted. Use --delete-emptydir-data.
+node/ip-192-168-10-21.us-west-2.compute.internal cordoned
+Warning: ignoring DaemonSet-managed Pods: kube-system/aws-node-skzh4, kube-system/kube-proxy-zpbt9
+evicting pod default/ui-599478d688-5v97w
+evicting pod default/consul-ssm-5984c6cd49-9bv6q
+evicting pod default/api-5d46bf5b77-2ggdc
+pod/api-5d46bf5b77-2ggdc evicted
+pod/ui-599478d688-5v97w evicted
+pod/consul-ssm-5984c6cd49-9bv6q evicted
+node/ip-192-168-10-21.us-west-2.compute.internal drained
+Flag --delete-local-data has been deprecated, This option is deprecated and will be deleted. Use --delete-emptydir-data.
+node/ip-192-168-62-148.us-west-2.compute.internal cordoned
+Warning: ignoring DaemonSet-managed Pods: kube-system/aws-node-rwbrk, kube-system/kube-proxy-49cd9
+evicting pod default/ui-599478d688-kvhfh
+evicting pod default/redis-cache-weather-prediction-7974c6658d-b5rfq
+evicting pod default/nginx-8d4978566-m4pfk
+evicting pod default/consul-ssm-5984c6cd49-smgdr
+pod/nginx-8d4978566-m4pfk evicted
+pod/redis-cache-weather-prediction-7974c6658d-b5rfq evicted
+pod/consul-ssm-5984c6cd49-smgdr evicted
+pod/ui-599478d688-kvhfh evicted
+node/ip-192-168-62-148.us-west-2.compute.internal drained
+Flag --delete-local-data has been deprecated, This option is deprecated and will be deleted. Use --delete-emptydir-data.
+node/ip-192-168-82-181.us-west-2.compute.internal cordoned
+Warning: ignoring DaemonSet-managed Pods: kube-system/aws-node-wt6lj, kube-system/kube-proxy-x2rx8
+evicting pod kube-system/coredns-787cb67946-jk8jq
+evicting pod default/nginx-8d4978566-xxg2l
+evicting pod default/ui-599478d688-dh55x
+evicting pod default/api-5d46bf5b77-hgwqf
+evicting pod default/redis-cache-weather-prediction-7974c6658d-n99w5
+evicting pod kube-system/coredns-787cb67946-2q5mq
+evicting pod default/consul-ssm-5984c6cd49-7t8mq
+error when evicting pods/"coredns-787cb67946-jk8jq" -n "kube-system" (will retry after 5s): Cannot evict pod as it would violate the pod's disruption budget.
+pod/nginx-8d4978566-xxg2l evicted
+pod/api-5d46bf5b77-hgwqf evicted
+pod/consul-ssm-5984c6cd49-7t8mq evicted
+pod/redis-cache-weather-prediction-7974c6658d-n99w5 evicted
+evicting pod kube-system/coredns-787cb67946-jk8jq
+error when evicting pods/"coredns-787cb67946-jk8jq" -n "kube-system" (will retry after 5s): Cannot evict pod as it would violate the pod's disruption budget.
+pod/coredns-787cb67946-2q5mq evicted
+evicting pod kube-system/coredns-787cb67946-jk8jq
+error when evicting pods/"coredns-787cb67946-jk8jq" -n "kube-system" (will retry after 5s): Cannot evict pod as it would violate the pod's disruption budget.
+pod/ui-599478d688-dh55x evicted
+
+(base) swasthika@Swasthikas-MacBook-Air eks % for node in $(kubectl get nodes -o name); do kubectl delete $node; done
+node "ip-192-168-10-21.us-west-2.compute.internal" deleted
+node "ip-192-168-62-148.us-west-2.compute.internal" deleted
+node "ip-192-168-82-181.us-west-2.compute.internal" deleted
