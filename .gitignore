@@ -162,3 +162,10 @@ dist
 
 # Consul
 **/node-id
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+.terraform.lock.hcl
