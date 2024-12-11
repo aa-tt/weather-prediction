@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: consul-ssm
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -25,19 +26,3 @@ spec:
       - name: consul-data
         hostPath:
           path: /data/consul
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: consul-ssm
-spec:
-  type: ClusterIP
-  ports:
-  - name: http
-    port: 8500
-    targetPort: 8500
-  - name: dns
-    port: 8600
-    targetPort: 8600
-  selector:
-    app: consul-ssm

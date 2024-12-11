@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-cache-weather-prediction
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -24,15 +25,3 @@ spec:
       - name: redis-data
         hostPath:
           path: /data/redis
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-cache-weather-prediction
-spec:
-  type: ClusterIP
-  ports:
-  - port: 6379
-    targetPort: 6379
-  selector:
-    app: redis-cache-weather-prediction
