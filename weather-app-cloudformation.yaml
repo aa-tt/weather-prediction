@@ -1,0 +1,118 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ConsulDeployment:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: consul-ssm
+      Version: '1.21'
+      ResourcesVpcConfig:
+        SubnetIds:
+          - subnet-12345678
+          - subnet-87654321
+      RoleArn: arn:aws:iam::123456789012:role/EKSClusterRole
+  ConsulService:
+    Type: AWS::EKS::Service
+    Properties:
+      ClusterName: !Ref ConsulDeployment
+      Name: consul-ssm
+      Spec:
+        Type: ClusterIP
+        Ports:
+          - Port: 8500
+            TargetPort: 8500
+          - Port: 8600
+            TargetPort: 8600
+        Selector:
+          app: consul-ssm
+
+  RedisDeployment:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: redis-cache-weather-prediction
+      Version: '1.21'
+      ResourcesVpcConfig:
+        SubnetIds:
+          - subnet-12345678
+          - subnet-87654321
+      RoleArn: arn:aws:iam::123456789012:role/EKSClusterRole
+  RedisService:
+    Type: AWS::EKS::Service
+    Properties:
+      ClusterName: !Ref RedisDeployment
+      Name: redis-cache-weather-prediction
+      Spec:
+        Type: ClusterIP
+        Ports:
+          - Port: 6379
+            TargetPort: 6379
+        Selector:
+          app: redis-cache-weather-prediction
+
+  UIDeployment:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: ui
+      Version: '1.21'
+      ResourcesVpcConfig:
+        SubnetIds:
+          - subnet-12345678
+          - subnet-87654321
+      RoleArn: arn:aws:iam::123456789012:role/EKSClusterRole
+  UIService:
+    Type: AWS::EKS::Service
+    Properties:
+      ClusterName: !Ref UIDeployment
+      Name: ui
+      Spec:
+        Type: LoadBalancer
+        Ports:
+          - Port: 5001
+            TargetPort: 5001
+        Selector:
+          app: ui
+
+  NginxDeployment:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: nginx
+      Version: '1.21'
+      ResourcesVpcConfig:
+        SubnetIds:
+          - subnet-12345678
+          - subnet-87654321
+      RoleArn: arn:aws:iam::123456789012:role/EKSClusterRole
+  NginxService:
+    Type: AWS::EKS::Service
+    Properties:
+      ClusterName: !Ref NginxDeployment
+      Name: nginx
+      Spec:
+        Type: LoadBalancer
+        Ports:
+          - Port: 80
+            TargetPort: 80
+        Selector:
+          app: nginx
+
+  APIDeployment:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: api
+      Version: '1.21'
+      ResourcesVpcConfig:
+        SubnetIds:
+          - subnet-12345678
+          - subnet-87654321
+      RoleArn: arn:aws:iam::123456789012:role/EKSClusterRole
+  APIService:
+    Type: AWS::EKS::Service
+    Properties:
+      ClusterName: !Ref APIDeployment
+      Name: api
+      Spec:
+        Type: ClusterIP
+        Ports:
+          - Port: 8080
+            TargetPort: 8080
+        Selector:
+          app: api
