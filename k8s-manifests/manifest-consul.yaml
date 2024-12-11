@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consul-ssm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul-ssm
+  template:
+    metadata:
+      labels:
+        app: consul-ssm
+    spec:
+      containers:
+      - name: consul
+        image: ianunay/weather-app-ssm:v1
+        ports:
+        - containerPort: 8500
+        - containerPort: 8600
+        volumeMounts:
+        - mountPath: /consul/data
+          name: consul-data
+      volumes:
+      - name: consul-data
+        hostPath:
+          path: /data/consul
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul-ssm
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8500
+    targetPort: 8500
+  - name: dns
+    port: 8600
+    targetPort: 8600
+  selector:
+    app: consul-ssm

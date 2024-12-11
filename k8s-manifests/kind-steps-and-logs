@@ -1,0 +1,78 @@
+(base) swasthika@Swasthikas-MacBook-Air helm % kind create cluster --name weather-app
+Creating cluster "weather-app" ...
+ ✓ Ensuring node image (kindest/node:v1.31.2) 🖼 
+ ✓ Preparing nodes 📦  
+ ✓ Writing configuration 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Set kubectl context to "kind-weather-app"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-weather-app
+
+Thanks for using kind! 😊
+(base) swasthika@Swasthikas-MacBook-Air helm % kubectl cluster-info --context kind-weather-app
+Kubernetes control plane is running at https://127.0.0.1:60614
+CoreDNS is running at https://127.0.0.1:60614/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+(base) swasthika@Swasthikas-MacBook-Air helm % cd ..            
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f k8s-manifests/manifest-redis.yaml 
+deployment.apps/redis-cache-weather-prediction created
+service/redis-cache-weather-prediction created
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f k8s-manifests/manifest-consul.yaml 
+deployment.apps/consul-ssm created
+service/consul-ssm created
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f k8s-manifests/manifest-api.yaml   
+deployment.apps/api created
+service/api created
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f k8s-manifests/manifest-ui.yaml 
+deployment.apps/ui created
+service/ui created
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f k8s-manifests/manifest-nginx.yaml 
+deployment.apps/nginx created
+service/nginx created
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl get deployments
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+api                              0/1     1            0           27s
+consul-ssm                       0/1     1            0           42s
+nginx                            0/1     1            0           14s
+redis-cache-weather-prediction   1/1     1            1           53s
+ui                               0/1     1            0           20s
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl get services   
+NAME                             TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+api                              ClusterIP      10.96.222.38    <none>        8080/TCP            42s
+consul-ssm                       ClusterIP      10.96.145.116   <none>        8500/TCP,8600/TCP   57s
+kubernetes                       ClusterIP      10.96.0.1       <none>        443/TCP             6m10s
+nginx                            LoadBalancer   10.96.250.187   <pending>     80:30819/TCP        29s
+redis-cache-weather-prediction   ClusterIP      10.96.92.142    <none>        6379/TCP            68s
+ui                               LoadBalancer   10.96.140.4     <pending>     5001:31360/TCP      35s
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+deployment.apps/kubernetes-dashboard created
+service/dashboard-metrics-scraper created
+deployment.apps/dashboard-metrics-scraper created
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f k8s-manifestsdashboard-adminuser.yaml 
+error: the path "k8s-manifestsdashboard-adminuser.yaml" does not exist
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % 
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl apply -f k8s-manifests/dashboard-adminuser.yaml
+serviceaccount/admin-user created
+clusterrolebinding.rbac.authorization.k8s.io/admin-user created
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl -n kubernetes-dashboard create token admin-user
+eyJhbGciOiJSUzI1NiIsImtpZCI6IlJjWGFucm5QdmZDSjZZaFdSUFBwejRhNks3clRBejFDWWVNY3Z5NjB2djQifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzMzOTQ0MDQxLCJpYXQiOjE3MzM5NDA0NDEsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiNzhlMWRiZTUtOTM5YS00OTczLWIxYWEtZTkxZjVhOThmM2QwIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhZG1pbi11c2VyIiwidWlkIjoiZjFiNzRhZWQtMDlkOS00ZWRhLTlkY2QtZjIwNmU3NzdjNjUwIn19LCJuYmYiOjE3MzM5NDA0NDEsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDphZG1pbi11c2VyIn0.RG5qqm1NopJOYHzAPCZKRmH7LqiD014jsQVW4kitcCNLIFquU-MNqJsyMIWTp6vabYN6Td9r7aMOHApcWbQWpLp3MjLWrKaI5FSCDugFwYhOVa8iaOjf40dQAyXgagsdtD6CiC0GNG6vxvoNvvDn-GzkUnIUFpRSuEQvJrvVeyXuhaNMDSUUqIgFpzSL0g_XO8xJ6mRdkMHX4EZ_XLpPCM9GrVCFdK9OTj3Vyzun58SY2OTZvVDWWa3gIun2OwvR8LQmH7nnfhGAnPTcmW20e4mVuI-k8UlGxspsu8tGTCAKdKsf5SbtKTpWZh44PtdXDSaqE7VMMRwOw-9GGJqadQ
+(base) swasthika@Swasthikas-MacBook-Air weather-prediction % kubectl proxy
+Starting to serve on 127.0.0.1:8001
+
+access dashboard
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
