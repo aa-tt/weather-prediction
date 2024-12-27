@@ -1,6 +1,6 @@
-(base) swasthika@Swasthikas-MacBook-Air helm % helm install weather-app ./weather-app
+(base) aa@aa helm % helm install weather-app ./weather-app
 Error: INSTALLATION FAILED: Unable to continue with install: Service "api" in namespace "default" exists and cannot be imported into the current release: invalid ownership metadata; label validation error: missing key "app.kubernetes.io/managed-by": must be set to "Helm"; annotation validation error: missing key "meta.helm.sh/release-name": must be set to "weather-app"; annotation validation error: missing key "meta.helm.sh/release-namespace": must be set to "default"
-(base) swasthika@Swasthikas-MacBook-Air helm % kubectl annotate service api meta.helm.sh/release-name=weather-app meta.helm.sh/release-namespace=default --overwrite
+(base) aa@aa helm % kubectl annotate service api meta.helm.sh/release-name=weather-app meta.helm.sh/release-namespace=default --overwrite
 service/api annotated
-(base) swasthika@Swasthikas-MacBook-Air helm % kubectl label service api app.kubernetes.io/managed-by=Helm --overwrite
+(base) aa@aa helm % kubectl label service api app.kubernetes.io/managed-by=Helm --overwrite
 service/api labeled
