@@ -31,6 +31,15 @@ For example, api published with tag v0 and image name ianunay/weather-app-api
 > docker push ianunay/weather-app-api:v0
 ```
 # Kubernetes
+### Kind - Kubernetes in Docker for single node K8S cluster and local development
+```shell
+kind create cluster --name weather-cluster
+kubectl cluster-info --context kind-weather-cluster
+kubectl apply -f kubernetes-dashboard.yaml
+kubectl port-forward service/nginx 30080:80 -n kind-weather-app
+````
+http://localhost:30080
+
 ### Kompose - deploy a sample docker-compose yaml file to a Kubernetes cluster.
 ```
 brew install kompose
