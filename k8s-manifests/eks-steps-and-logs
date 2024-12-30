@@ -1,0 +1,95 @@
+(base) ~/abcc/weather-prediction/k8s-manifests git:[master]
+eksctl create cluster --name eks-weather-cluster-0 --region us-west-2 --nodegroup-name standard-workers --node-type t3.small --nodes 1 --nodes-min 1 --nodes-max 1 --managed
+2024-12-30 14:34:02 [ℹ]  eksctl version 0.198.0
+2024-12-30 14:34:02 [ℹ]  using region us-west-2
+2024-12-30 14:34:03 [ℹ]  setting availability zones to [us-west-2c us-west-2a us-west-2d]
+2024-12-30 14:34:03 [ℹ]  subnets for us-west-2c - public:192.168.0.0/19 private:192.168.96.0/19
+2024-12-30 14:34:03 [ℹ]  subnets for us-west-2a - public:192.168.32.0/19 private:192.168.128.0/19
+2024-12-30 14:34:03 [ℹ]  subnets for us-west-2d - public:192.168.64.0/19 private:192.168.160.0/19
+2024-12-30 14:34:03 [ℹ]  nodegroup "standard-workers" will use "" [AmazonLinux2/1.30]
+2024-12-30 14:34:03 [ℹ]  using Kubernetes version 1.30
+2024-12-30 14:34:03 [ℹ]  creating EKS cluster "eks-weather-cluster-0" in "us-west-2" region with managed nodes
+2024-12-30 14:34:03 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial managed nodegroup
+2024-12-30 14:34:03 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-west-2 --cluster=eks-weather-cluster-0'
+2024-12-30 14:34:03 [ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "eks-weather-cluster-0" in "us-west-2"
+2024-12-30 14:34:03 [ℹ]  CloudWatch logging will not be enabled for cluster "eks-weather-cluster-0" in "us-west-2"
+2024-12-30 14:34:03 [ℹ]  you can enable it with 'eksctl utils update-cluster-logging --enable-types={SPECIFY-YOUR-LOG-TYPES-HERE (e.g. all)} --region=us-west-2 --cluster=eks-weather-cluster-0'
+2024-12-30 14:34:03 [ℹ]  default addons vpc-cni, kube-proxy, coredns were not specified, will install them as EKS addons
+2024-12-30 14:34:03 [ℹ]
+2 sequential tasks: { create cluster control plane "eks-weather-cluster-0",
+    2 sequential sub-tasks: {
+        2 sequential sub-tasks: {
+            1 task: { create addons },
+            wait for control plane to become ready,
+        },
+        create managed nodegroup "standard-workers",
+    }
+}
+2024-12-30 14:34:03 [ℹ]  building cluster stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:34:06 [ℹ]  deploying stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:34:36 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:35:07 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:36:09 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:37:10 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:38:11 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:39:13 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:40:15 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:41:16 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:42:17 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:43:19 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-cluster"
+2024-12-30 14:43:24 [!]  recommended policies were found for "vpc-cni" addon, but since OIDC is disabled on the cluster, eksctl cannot configure the requested permissions; the recommended way to provide IAM permissions for "vpc-cni" addon is via pod identity associations; after addon creation is completed, add all recommended policies to the config file, under `addon.PodIdentityAssociations`, and run `eksctl update addon`
+2024-12-30 14:43:24 [ℹ]  creating addon
+2024-12-30 14:43:25 [ℹ]  successfully created addon
+2024-12-30 14:43:26 [ℹ]  creating addon
+2024-12-30 14:43:27 [ℹ]  successfully created addon
+2024-12-30 14:43:27 [ℹ]  creating addon
+2024-12-30 14:43:28 [ℹ]  successfully created addon
+2024-12-30 14:45:34 [ℹ]  building managed nodegroup stack "eksctl-eks-weather-cluster-0-nodegroup-standard-workers"
+2024-12-30 14:45:37 [ℹ]  deploying stack "eksctl-eks-weather-cluster-0-nodegroup-standard-workers"
+2024-12-30 14:45:37 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-nodegroup-standard-workers"
+2024-12-30 14:46:08 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-nodegroup-standard-workers"
+2024-12-30 14:47:00 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-nodegroup-standard-workers"
+2024-12-30 14:49:00 [ℹ]  waiting for CloudFormation stack "eksctl-eks-weather-cluster-0-nodegroup-standard-workers"
+2024-12-30 14:49:00 [ℹ]  waiting for the control plane to become ready
+2024-12-30 14:49:04 [✔]  saved kubeconfig as "/Users/aa/.kube/config"
+2024-12-30 14:49:04 [ℹ]  no tasks
+2024-12-30 14:49:04 [✔]  all EKS cluster resources for "eks-weather-cluster-0" have been created
+2024-12-30 14:49:05 [ℹ]  nodegroup "standard-workers" has 1 node(s)
+2024-12-30 14:49:05 [ℹ]  node "ip-192-168-84-209.us-west-2.compute.internal" is ready
+2024-12-30 14:49:05 [ℹ]  waiting for at least 1 node(s) to become ready in "standard-workers"
+2024-12-30 14:49:06 [ℹ]  nodegroup "standard-workers" has 1 node(s)
+2024-12-30 14:49:06 [ℹ]  node "ip-192-168-84-209.us-west-2.compute.internal" is ready
+2024-12-30 14:49:06 [✔]  created 1 managed nodegroup(s) in cluster "eks-weather-cluster-0"
+2024-12-30 14:49:08 [ℹ]  kubectl command should work with "/Users/aa/.kube/config", try 'kubectl get nodes'
+2024-12-30 14:49:08 [✔]  EKS cluster "eks-weather-cluster-0" in "us-west-2" region is ready
+
+(base) ~/abcc/weather-prediction/k8s-manifests git:[master]
+kubectl get nodes
+NAME                                           STATUS   ROLES    AGE   VERSION
+ip-192-168-84-209.us-west-2.compute.internal   Ready    <none>   17m   v1.30.7-eks-59bf375
+
+(base) ~/abcc/weather-prediction/k8s-manifests git:[master]
+kubectl apply -f eks-weather-app.yaml
+namespace/eks-weather-app created
+deployment.apps/consul-ssm created
+service/consul-ssm created
+deployment.apps/redis-cache-weather-prediction created
+service/redis-cache-weather-prediction created
+deployment.apps/api created
+service/api created
+deployment.apps/ui created
+service/ui created
+configmap/nginx-config created
+deployment.apps/nginx created
+service/nginx created
+
+(base) ~/abcc/weather-prediction/k8s-manifests git:[master]
+kubectl get services -n eks-weather-app
+NAME                             TYPE           CLUSTER-IP       EXTERNAL-IP                                                              PORT(S)             AGE
+api                              ClusterIP      10.100.144.15    <none>                                                                   8080/TCP            68s
+consul-ssm                       ClusterIP      10.100.138.104   <none>                                                                   8500/TCP,8600/TCP   72s
+nginx                            LoadBalancer   10.100.130.89    a96a52c8094de46d78688c6d5008e893-149566309.us-west-2.elb.amazonaws.com   80:30080/TCP        64s
+redis-cache-weather-prediction   ClusterIP      10.100.13.138    <none>                                                                   6379/TCP            70s
+ui                               NodePort       10.100.123.167   <none>                                                                   5001:31001/TCP      67s
+
+http://a96a52c8094de46d78688c6d5008e893-149566309.us-west-2.elb.amazonaws.com/

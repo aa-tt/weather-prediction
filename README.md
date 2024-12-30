@@ -31,6 +31,41 @@ For example, api published with tag v0 and image name ianunay/weather-app-api
 > docker push ianunay/weather-app-api:v0
 ```
 # Kubernetes
+### eksctl - for AWS EKS cluster
+```shell
+eksctl create cluster --name eks-weather-cluster-0 --region us-west-2 --nodegroup-name standard-workers --node-type t3.small --nodes 1 --nodes-min 0 --nodes-max 1 --managed
+kubectl apply -f eks-weather-app.yaml
+kubectl get service nginx -n eks-weather-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+```   
+http://a96a52c8094de46d78688c6d5008e893-149566309.us-west-2.elb.amazonaws.com
+#### Route 53
+To access the service using a domain name, create a hosted zone in Route 53 and create an A record with the load balancer DNS name.
+http://myday.outorin.com or http://44.228.245.169
+```shell
+aws route53 change-resource-record-sets --hosted-zone-id <hosted-zone-id> --change-batch '{
+  "Changes": [
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "myday.outorin.io",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": "Z35SXDOTRQ7X7K",  // Hosted zone ID for ELB in us-west-2
+          "DNSName": "dualstack.a96a52c8094de46d78688c6d5008e893-149566309.us-west-2.elb.amazonaws.com.",
+          "EvaluateTargetHealth": false
+        }
+      }
+    }
+  ]
+}'
+```
+#### Scale down EKS cluster to 0 node for cost saving and scale up later for bringing up the service
+```shell
+eksctl scale nodegroup --cluster=eks-weather-cluster-0 --name=standard-workers --nodes=0
+kubectl get nodes
+eksctl scale nodegroup --cluster=eks-weather-cluster-0 --name=standard-workers --nodes=1
+kubectl get nodes
+```
 ### Kind - Kubernetes in Docker for single node K8S cluster and local development
 ```shell
 kind create cluster --name weather-cluster
