@@ -8,7 +8,7 @@ CloudFront Distribution [icon: aws-cloudfront]
 ELB [icon: aws-elb]
 
 EKS Cluster [icon: aws-eks] {
-  Nginx Pod [icon: docker, label: "Nginx"]
+  Nginx Pod [icon: nginx, label: "Nginx"]
   Webserver [icon:react]
   App Server [icon:spring]
   Redis Cluster [icon:redis]
