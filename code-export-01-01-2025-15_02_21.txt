@@ -12,7 +12,8 @@ EKS Cluster [icon: aws-eks] {
   Webserver [icon:react]
   App Server [icon:spring]
   Redis Cluster [icon:redis]
-  Consul Cluster [icon:consul]
+  Consul Cluster [icon:aws-secrets-manager, , label: "ssm"]
+  Ingress [icon: k8s-ingress, label: "ingress"]
 }
 
 S3 [icon: aws-s3]
@@ -25,9 +26,10 @@ CloudFront Distribution > ELB: primary origin
 CloudFront Distribution > S3: failover
 S3 --> CloudFront Distribution: error.html
 ELB > EKS Cluster
+Ingress --> Nginx Pod
 User Browser < Nginx Pod: serve JavaScript and fetch API
 Nginx Pod > Webserver: /
-Nginx Pod > App Server: /api
-Consul Cluster --> App Server: provide key for API call
+Nginx Pod > App Server
+Consul Cluster --> App Server: key for API call
 App Server > Open Weather API
 Open Weather API > Redis Cluster: cache response
