@@ -1,0 +1,33 @@
+// Nodes and groups
+User Browser [icon: monitor]
+
+Route 53 [icon: aws-route-53, label: "myday.outorin.io"]
+
+CloudFront Distribution [icon: aws-cloudfront]
+
+ELB [icon: aws-elb]
+
+EKS Cluster [icon: aws-eks] {
+  Nginx Pod [icon: docker, label: "Nginx"]
+  Webserver [icon:react]
+  App Server [icon:spring]
+  Redis Cluster [icon:redis]
+  Consul Cluster [icon:consul]
+}
+
+S3 [icon: aws-s3]
+Open Weather API [icon:openai]
+
+// Connections
+User Browser > Route 53
+Route 53 > CloudFront Distribution
+CloudFront Distribution > ELB: primary origin
+CloudFront Distribution > S3: failover
+S3 --> CloudFront Distribution: error.html
+ELB > EKS Cluster
+User Browser < Nginx Pod: serve JavaScript and fetch API
+Nginx Pod > Webserver: /
+Nginx Pod > App Server: /api
+Consul Cluster --> App Server: provide key for API call
+App Server > Open Weather API
+Open Weather API > Redis Cluster: cache response
