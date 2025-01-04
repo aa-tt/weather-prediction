@@ -1,0 +1,17 @@
+gcloud auth login
+gcloud config set project weatherappproject-1
+gcloud components install gke-gcloud-auth-plugin
+gcloud container clusters get-credentials weatherapp-cluster-0 --region asia-south1 --project weatherappproject-1
+kubectl get nodes
+kubectl apply -f k8s-manifests/gke-weather-app.yaml
+kubectl get service nginx --namespace gke-weather-app --output jsonpath='{.status.loadBalancer.ingress[0].ip}'
+35.244.50.120
+
+https://console.cloud.google.com/kubernetes/deployment/asia-south1/weatherapp-cluster-0/gke-weather-app/nginx/overview?invt=Abl6nQ&project=weatherappproject-1
+nginx	Load balancer	35.244.50.120:80
+
+GoDaddy.com > My Products > Domains > Manage DNS for outorin.life
+Name: @ (or www if you want to redirect www.outorin.life)
+Type: A
+Value: 35.244.50.120
+TTL: 1 Hour (or your preferred TTL)
