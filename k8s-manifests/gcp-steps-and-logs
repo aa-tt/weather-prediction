@@ -15,3 +15,5 @@ Name: @ (or www if you want to redirect www.outorin.life)
 Type: A
 Value: 35.244.50.120
 TTL: 1 Hour (or your preferred TTL)
+
+gcloud container clusters delete weatherapp-cluster-0 --zone asia-south1 --project weatherappproject-1
