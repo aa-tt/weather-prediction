@@ -1,10 +1,5 @@
-package com.aa.weatherprediction.model;
+package life.outorin.myday.dto;
 
-import com.squareup.moshi.JsonClass;
-import kotlinx.serialization.Serializable;
-
-@JsonClass(generateAdapter = true)
-@Serializable
 public record City(
         String name,
         Double lat,
@@ -12,6 +7,7 @@ public record City(
         String country,
         String state
 ) {
+
     public City() {
         this(null, null, null, null, null);
     }
