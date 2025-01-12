@@ -1,6 +1,7 @@
 package life.outorin.myday.dto;
 
-public record Wind(
-        double speed
-) {
+import java.io.Serializable;
+
+public record Wind(double speed) implements Serializable {
+
 }

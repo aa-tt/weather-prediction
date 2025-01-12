@@ -23,15 +23,15 @@ public class ReportService {
         logger.info("WeatherData: {}", weatherData);
 
         List<String> weatherAlerts = new ArrayList<>();
-        if (weatherData.wind().speed() > 10) {
-            weatherAlerts.add("It’s too windy, watch out!");
-        }
-        if (weatherData.main().temp() > 40) {
-            weatherAlerts.add("Use sunscreen lotion");
-        }
-        if (weatherData.rain() != null) {
-            weatherAlerts.add("Carry Umbrella");
-        }
+//        if (weatherData.wind().speed() > 10) {
+//            weatherAlerts.add("It’s too windy, watch out!");
+//        }
+//        if (weatherData.main().temp() > 40) {
+//            weatherAlerts.add("Use sunscreen lotion");
+//        }
+//        if (weatherData.rain()!= null) {
+//            weatherAlerts.add("Carry Umbrella");
+//        }
 
         return new WeatherReport(
                 weatherAlerts,

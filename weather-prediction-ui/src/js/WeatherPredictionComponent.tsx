@@ -1,9 +1,13 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState, Suspense, lazy } from "react";
 import CitySelector from './shared/CitySelector';
 import { counterService } from './shared/CounterService';
-import DayAndWeatherReport from './forecast/DayAndWeatherReport';
+// import DayAndWeatherReport from './forecast/DayAndWeatherReport';
 
-import WeatherReport from './daily/WeatherReport';
+// import WeatherReport from './daily/WeatherReport';
+
+// Lazy load the components
+const WeatherReport = lazy(() => import('./daily/WeatherReport'));
+const DayAndWeatherReport = lazy(() => import('./forecast/DayAndWeatherReport'));
 
 const WeatherPredictionComponent: FunctionComponent = () => {
 
@@ -47,16 +51,20 @@ const WeatherPredictionComponent: FunctionComponent = () => {
           Forecast
         </p>
         <div className='flex'>
-          {city &&
-            <DayAndWeatherReport city={city} />
-          }
+          {city && (
+            <Suspense fallback={<div>Loading Weather Report...</div>}>
+              <DayAndWeatherReport city={city} />
+            </Suspense>
+          )}
         </div>
         <p className='text-gray-500 dark:text-gray-400 bold mt-2'>
           Weather Today
         </p>
-        {city &&
-          <WeatherReport city={city} />
-        }
+        {city && (
+          <Suspense fallback={<div>Loading Weather Report...</div>}>
+            <WeatherReport city={city} />
+          </Suspense>
+        )}
       </div>
     </div >
   )

@@ -1,7 +1,8 @@
 package life.outorin.myday.dto;
 
-public record Coord(
+import java.io.Serializable;
+
+public record Coord (
         double lat,
-        double lon
-) {
+        double lon) implements Serializable {
 }

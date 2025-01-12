@@ -1,6 +1,6 @@
 package life.outorin.myday.dto;
 
-public record Weather(
-        String main
-) {
+import java.io.Serializable;
+
+public record Weather(String main) implements Serializable {
 }

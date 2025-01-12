@@ -38,13 +38,8 @@ public class WeatherController {
         return weatherService.getReport(city);
     }
 
-//    @GetMapping("/cities/{cityName}/days/{days}/forecast")
-//    public Mono<String> getPast3DaysWeather(@PathVariable String city, @PathVariable Integer days) {
-//        return webClient.get()
-//                .uri(uriBuilder -> uriBuilder.path("/past3daysweather")
-//                        .queryParam("city", city)
-//                        .build())
-//                .retrieve()
-//                .bodyToMono(String.class);
-//    }
+    @GetMapping("/cities/{city}/days/{days}/forecast")
+    public Mono<List<WeatherReport>> getPast3DaysWeather(@PathVariable String city, @PathVariable Integer days) {
+        return weatherService.fetchWeatherReportHistoryFromCassandra(city);
+    }
 }

@@ -4,6 +4,7 @@ import life.outorin.myday.dto.Coord;
 import life.outorin.myday.dto.WeatherData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -23,6 +24,7 @@ public class ConnectorService {
     @Value("${openweather.api.key}")
     private String weatherKey;
 
+    @Cacheable(key= "#city", value= "City")
     public Mono<List<Coord>> getCity(String city) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path(cityUri)
@@ -34,6 +36,7 @@ public class ConnectorService {
                 .collectList();
     }
 
+    @Cacheable(key="#coord.lat + '-' + #coord.lon", value= "WeatherData")
     public Mono<WeatherData> getWeather(Coord coord) {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder.path(weatherUri)

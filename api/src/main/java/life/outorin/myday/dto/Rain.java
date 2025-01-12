@@ -1,6 +1,6 @@
 package life.outorin.myday.dto;
 
-public record Rain(
-        Double lh
-) {
+import java.io.Serializable;
+
+public record Rain (Double lh) implements Serializable {
 }
