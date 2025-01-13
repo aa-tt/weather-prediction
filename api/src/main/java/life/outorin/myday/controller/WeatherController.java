@@ -38,6 +38,11 @@ public class WeatherController {
         return weatherService.getReport(city);
     }
 
+    @GetMapping("/cities/{city}/forecast/alerts")
+    public SseEmitter getCurrentWeatherAlerts(@PathVariable String city) {
+        return weatherService.getCurrentWeatherAlerts(city);
+    }
+
     @GetMapping("/cities/{city}/days/{days}/forecast")
     public Mono<List<WeatherReport>> getPast3DaysWeather(@PathVariable String city, @PathVariable Integer days) {
         return weatherService.fetchWeatherReportHistoryFromCassandra(city);

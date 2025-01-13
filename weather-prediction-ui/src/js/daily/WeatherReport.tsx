@@ -1,6 +1,6 @@
 import React from 'react';
 import { FunctionComponent, useEffect, useState } from 'react';
-import { getWeatherReport } from '../../api/call';
+import { getWeatherReport, getWeatherReportAlertPerdictions } from '../../api/call';
 import { Report } from '../../model/Report';
 
 type Props = {
@@ -11,6 +11,7 @@ const WeatherReport: FunctionComponent<Props> = (props: Props) => {
 
   const { city } = props;
 
+  const [alerts, setAlerts] = useState([]);
   const [temperature, setTemperature] = useState<Partial<Report> | null>(null);
   const [reports, setReports] = useState<string[]>([]);
 
@@ -23,6 +24,23 @@ const WeatherReport: FunctionComponent<Props> = (props: Props) => {
     ).catch(
       console.error
     )
+  }, [city]);
+
+  useEffect(() => {
+    const eventSource = getWeatherReportAlertPerdictions(city);
+    eventSource.onmessage = (event) => {
+      const newAlerts = JSON.parse(event.data);
+      setAlerts(newAlerts);
+    };
+
+    eventSource.onerror = (error) => {
+      console.error('EventSource failed:', error);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
   }, [city]);
 
   return (
@@ -41,7 +59,7 @@ const WeatherReport: FunctionComponent<Props> = (props: Props) => {
             </span>
           </div>
           <p className='text-slate-500 dark:text-slate-400 mt-2 text-5xl'>
-            {report}
+            {alerts.join(', ')}
           </p>
         </div>
       ))}

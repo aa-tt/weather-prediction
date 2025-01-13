@@ -34,6 +34,11 @@ export async function getWeatherReport(city: string): Promise<Report> {
   return data;
 }
 
+export function getWeatherReportAlertPerdictions(city: string): EventSource {
+
+  return new EventSource(`${baseUrl}/cities/${city}/forecast/alerts`)
+}
+
 export async function getWeatherForecastByDays(city: string, days: number = 3): Promise<DayAndReport[]> {
 
   baseUrl = getbaseUrl();

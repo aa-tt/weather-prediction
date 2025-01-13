@@ -3,17 +3,24 @@ package life.outorin.myday.service;
 import com.datastax.astra.client.Database;
 import com.datastax.astra.client.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import life.outorin.myday.dto.Coord;
 import life.outorin.myday.dto.WeatherReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,34 +75,14 @@ public class WeatherService {
         System.out.println("Connected to AstraDB " + database.getNamespaceName());
     }
 
-//    private Mono<WeatherReport> saveWeatherReport(String city, WeatherReport report) {
-//        return Mono.fromCallable(() -> {
-//            Document document = Document.create(report);
-//            document.put("_id", UUID.randomUUID().toString()); // Generate a unique _id
-//            document.put("city", city); // Add city as primary key
-//            document.put("timestamp", report.dt().atZone(ZoneId.systemDefault()).toInstant()); // Add timestamp as primary key
-//            document.put("temp_min", report.temp_min()); // Add timestamp as primary key
-//            document.put("temp_max", report.temp_max()); // Add timestamp as primary key
-//            database.getCollection("weather_report").insertOne(document);
-//
-//            // Send the WeatherReport to the Kafka topic
-//            producerService.produce(reportTopic, city, report.toString());
-//
-//            return report;
-//        });
-//    }
-
-    private Mono<WeatherReport> fetchWeatherReportFromCassandra(String city) {
+    private Mono<WeatherReport> fetchCurrentWeatherReportFromCassandra(String city) {
         return Mono.fromCallable(() -> {
-            FindOneOptions options = new FindOneOptions().sort(Sorts.descending("timestamp"));
-            Document document = database.getCollection("weather_report")
-                    .findOne(Filters.eq("city", city), options)
-                    .get();
-            if (document == null) {
-                throw new RuntimeException("Weather report not found for city: " + city);
-            }
+            LocalDateTime currentTime = LocalDate.now().atStartOfDay();
+            FindOptions options = new FindOptions().sort(Sorts.descending("timestamp"));
+            List<Document> document = database.getCollection("weather_report")
+                    .find(Filters.eq("city", city), options).all();
             System.out.println("Weather report found: " + document);
-            return new WeatherReport(document);
+            return new WeatherReport(document.stream().findFirst().get());
         });
     }
 
@@ -113,4 +100,65 @@ public class WeatherService {
                     .collect(Collectors.toList());
         });
     }
+
+    public SseEmitter getCurrentWeatherAlerts(String city) {
+        SseEmitter emitter = new SseEmitter();
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(() -> {
+//            if (!isEmitterActive(emitter)) {
+                fetchCurrentWeatherReportFromCassandra(city)
+                        .doOnNext(weatherReport -> {
+                            try {
+                                emitter.send(SseEmitter.event().data(weatherReport.alerts()));
+                            } catch (IOException e) {
+                                emitter.completeWithError(e);
+                            }
+                        })
+                        .doOnError(error -> {
+                            try {
+                                emitter.send(SseEmitter.event().data(List.of()));
+                            } catch (IOException e) {
+                                emitter.completeWithError(e);
+                            }
+                        })
+                        .subscribe();
+//            }   else {
+//                executor.shutdown();
+//            }
+
+        }, 0, 60, TimeUnit.SECONDS); // Check every 5 seconds
+
+        emitter.onCompletion(executor::shutdown);
+        emitter.onTimeout(executor::shutdown);
+
+        return emitter;
+    }
+
+    private boolean isEmitterActive(SseEmitter emitter) {
+        try {
+            emitter.send(SseEmitter.event().comment(""));
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+
+//    private Mono<WeatherReport> saveWeatherReport(String city, WeatherReport report) {
+//        return Mono.fromCallable(() -> {
+//            Document document = Document.create(report);
+//            document.put("_id", UUID.randomUUID().toString()); // Generate a unique _id
+//            document.put("city", city); // Add city as primary key
+//            document.put("timestamp", report.dt().atZone(ZoneId.systemDefault()).toInstant()); // Add timestamp as primary key
+//            document.put("temp_min", report.temp_min()); // Add timestamp as primary key
+//            document.put("temp_max", report.temp_max()); // Add timestamp as primary key
+//            database.getCollection("weather_report").insertOne(document);
+//
+//            // Send the WeatherReport to the Kafka topic
+//            producerService.produce(reportTopic, city, report.toString());
+//
+//            return report;
+//        });
+//    }
 }
