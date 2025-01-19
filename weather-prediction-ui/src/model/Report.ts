@@ -6,6 +6,9 @@ export type Report = {
 }
 
 export type DayAndReport = {
-  day: string;
-  report: Report;
+  dt: string;
+  alerts: Array<string>;
+  mains: Array<string>;
+  temp_min?: number;
+  temp_max?: number;
 }

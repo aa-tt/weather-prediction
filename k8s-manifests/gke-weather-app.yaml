@@ -136,7 +136,8 @@ spec:
     spec:
       containers:
       - name: api
-        image: ianunay/weather-app-api:v6
+#        image: ianunay/weather-app-api:v6 # this image for kotlin api
+        image: ianunay/weather-java-api:v3 # this image for java api
         ports:
         - containerPort: 8080
         env:
@@ -177,7 +178,8 @@ spec:
     spec:
       containers:
       - name: ui
-        image: ianunay/weather-app-ui:v2
+        #        image: ianunay/weather-app-ui:v2 # use image with kotlin api and for non-SSE
+        image: ianunay/weather-app-ui:v6 # use image with java api and for SSE
         ports:
         - containerPort: 5001
 ---

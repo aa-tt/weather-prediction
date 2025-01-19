@@ -1,0 +1,14 @@
+FROM maven:3.8.1-openjdk-17-slim
+
+WORKDIR /usr/src/api
+
+ENV ALLOW_ORIGINS=http://localhost:5001,http://localhost,https://*.gitpod.io
+ENV REDIS_HOST=redis-cache-weather-prediction
+ENV REDIS_PORT=6379
+ENV CONSUL_HOST=consul-ssm
+
+COPY . .
+
+RUN mvn clean package -DskipTests
+
+CMD ["java", "-jar", "./target/myday-0.0.1-SNAPSHOT.jar"]

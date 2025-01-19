@@ -10,19 +10,23 @@ type Props = {
 const WeatherReport: FunctionComponent<Props> = (props: Props) => {
 
   const { city } = props;
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [alerts, setAlerts] = useState([]);
-  const [temperature, setTemperature] = useState<Partial<Report> | null>(null);
-  const [reports, setReports] = useState<string[]>([]);
+  const [report, setReport] = useState<Partial<Report> | null>(null);
 
   useEffect(() => {
     getWeatherReport(city).then(
       (data: Report) => {
-        setReports(data.alerts);
-        setTemperature(data);
+        console.log("---widget one data---");
+        console.log(data);
+        setReport(data);
       }
     ).catch(
-      console.error
+      (error) => setError(error)
+    ).finally(
+      () => setLoading(false)
     )
   }, [city]);
 
@@ -43,26 +47,34 @@ const WeatherReport: FunctionComponent<Props> = (props: Props) => {
     };
   }, [city]);
 
+  if (loading) {
+    return <div>Loading Widget One...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <>
-      {reports && reports.map(report => (
-        <div key={report} className='mt-5 bg-white dark:bg-slate-800 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl'>
+      {report && (
+        <div className='mt-5 bg-white dark:bg-slate-800 rounded-lg px-6 py-8 ring-1 ring-slate-900/5 shadow-xl'>
           <div className='mt-2 text-sm'>
             <p className='text-slate-500 dark:text-slate-400 bold'>
               Temperature:
             </p>
             <span className='text-slate-500 dark:text-slate-400'>
-              min: {temperature?.temp_min}
+              min: {report?.temp_min}
             </span>
             <span className='ml-5 text-slate-500 dark:text-slate-400'>
-              max: {temperature?.temp_max}
+              max: {report?.temp_max}
             </span>
           </div>
           <p className='text-slate-500 dark:text-slate-400 mt-2 text-5xl'>
             {alerts.join(', ')}
           </p>
         </div>
-      ))}
+      )}
     </>
   )
 }

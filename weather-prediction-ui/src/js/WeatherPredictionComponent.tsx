@@ -52,7 +52,7 @@ const WeatherPredictionComponent: FunctionComponent = () => {
         </p>
         <div className='flex'>
           {city && (
-            <Suspense fallback={<div>Loading Weather Report...</div>}>
+            <Suspense fallback={<div>Loading Past Reports...</div>}>
               <DayAndWeatherReport city={city} />
             </Suspense>
           )}
