@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -98,7 +100,13 @@ public class WeatherService {
             return documents.stream()
                     .map(WeatherReport::new)
                     .collect(Collectors.toList());
-        });
+        })
+        .retryWhen(Retry.backoff(10, Duration.ofSeconds(1))
+        .maxBackoff(Duration.ofSeconds(10))
+        .jitter(0.5)
+        .doBeforeRetry(retrySignal -> 
+            System.out.println("Retrying due to: " + retrySignal.failure().getMessage())
+        ));
     }
 
     public SseEmitter getCurrentWeatherAlerts(String city) {
