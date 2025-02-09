@@ -136,8 +136,8 @@ spec:
     spec:
       containers:
       - name: api
-#        image: ianunay/weather-app-api:v6 # this image for kotlin api
-        image: ianunay/weather-java-api:v3 # this image for java api
+        # image: ianunay/weather-app-api:v6 # this image for kotlin api
+        image: ianunay/weather-java-api:v4 # this image for java api
         ports:
         - containerPort: 8080
         env:
@@ -178,7 +178,7 @@ spec:
     spec:
       containers:
       - name: ui
-        #        image: ianunay/weather-app-ui:v2 # use image with kotlin api and for non-SSE
+        # image: ianunay/weather-app-ui:v2 # use image with kotlin api and for non-SSE
         image: ianunay/weather-app-ui:v6 # use image with java api and for SSE
         ports:
         - containerPort: 5001
@@ -233,6 +233,11 @@ data:
           add_header Accept "application/json";
           
           proxy_pass http://api:8080;
+
+          # Disable buffering for SSE
+          proxy_buffering off;
+          proxy_cache off;
+          proxy_read_timeout 86400s;
         }
     
         location / {
@@ -272,7 +277,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: ianunay/weather-app-nginx:v4
+        image: ianunay/weather-app-nginx:v5
         ports:
         - containerPort: 80
         volumeMounts:
