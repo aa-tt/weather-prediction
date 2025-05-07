@@ -59,6 +59,10 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-consul-config")
 //    implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
 
+    // Kafka
+    implementation("org.springframework.kafka:spring-kafka")
+
+
 
 //    implementation("com.amazonaws.aws-java-sdk-dynamodb:1.12.389")
 //	implementation("software.amazon.awssdk.dynamodb:2.18.2")
@@ -69,6 +73,7 @@ dependencies {
     testImplementation("it.ozimov:embedded-redis:0.7.3") {
         exclude(group = "org.slf4j")
     }
+    testImplementation("org.springframework.kafka:spring-kafka-test")
 //	testImplementation("io.projectreactor:reactor-test")
 //	testImplementation("org.springframework.security:spring-security-test")
 }
