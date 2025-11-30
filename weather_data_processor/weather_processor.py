@@ -20,7 +20,7 @@ client = DataAPIClient(
     "astraCS-token"
 )
 db = client.get_database_by_api_endpoint(
-    "https://671377f7-eeb5-498d-aeb5-5544e0cc1d9d-us-east1.apps.astra.datastax.com",
+    "https://5ebf24fb-d5db-4ab7-a0ac-9f8ad5c0d50d-us-east1.apps.astra.datastax.com",
     keyspace="weather_ns"
 )
 
@@ -57,7 +57,7 @@ def store_weather_report(city, report):
     timestamp = datetime.datetime.fromisoformat(report['dt']).astimezone().isoformat()
     
     document = {
-        "_id": document_id,
+        # "_id": document_id,
         "city": city,
         "timestamp": timestamp,
         "temp_min": report['temp_min'],

@@ -137,7 +137,7 @@ spec:
       containers:
       - name: api
         # image: ianunay/weather-app-api:v6 # this image for kotlin api
-        image: ianunay/weather-java-api:v4 # this image for java api
+        image: ianunay/weather-java-api:v5 # this image for java api
         ports:
         - containerPort: 8080
         env:
@@ -327,7 +327,7 @@ spec:
     spec:
       containers:
         - name: weather-data-processor
-          image: ianunay/weather-data-processor:v0
+          image: ianunay/weather-data-processor:v2
           ports:
             - containerPort: 8081
 ---
